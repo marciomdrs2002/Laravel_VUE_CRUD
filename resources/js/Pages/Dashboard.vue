@@ -46,7 +46,7 @@
                             </div>
                             <div class="mb-3" v-if="form.creator">
                                 <label for="creator" class="form-label">Creator</label>
-                                <input  v-model="form.creator" type="text" class="form-control" id="creator" disabled>
+                                <input v-model="form.creator" type="text" class="form-control" id="creator" disabled>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="status" @change="updateStatus" checked>
@@ -67,23 +67,24 @@
         <template #header>
             <h2 class="font-semibold text-xl text-dark">Dashboard</h2>
         </template>
-
-        <div class="py-12">
-            <div class="container mx-auto">
-                <div class="overflow-hidden shadow-sm rounded card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <p>Projects</p>
-                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_create">
-                            New Project
-                        </button>
-                    </div>
-                    <div class="alert alert-danger" role="alert" v-if="responseErrors.error">
-                        {{ responseErrors.error }}
-                    </div>
-                    <TableComponent :projects="data" @delete="deleteProject" @edit="getEditingProject" />
+        <div v-if="alerts" class="alert w-50 mx-auto mt-6" role="alert" :class="alerts.type">
+            {{ alerts.message }}
+        </div>
+        <div class="container">
+            <div class="overflow-hidden shadow-sm rounded card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <p>Projects</p>
+                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_create">
+                        New Project
+                    </button>
                 </div>
+                <div class="alert alert-danger" role="alert" v-if="responseErrors.error">
+                    {{ responseErrors.error }}
+                </div>
+                <TableComponent :projects="data" @delete="deleteProject" @edit="getEditingProject" />
             </div>
         </div>
+
     </AuthenticatedLayout>
 </template>
 <script>
@@ -100,6 +101,7 @@ export default {
     },
     data() {
         return {
+            alerts: {},
             data: [],
             form: {
                 status: 'active',
@@ -122,11 +124,18 @@ export default {
         },
         submit() {
             const route = this.form.id ? '/updateProject' : '/storeProject';
+
             axios.post(route, this.form)
                 .then(response => {
+
                     this.getTableData();
                     this.resetForm();
                     $('#modal_create').modal('hide');
+
+                    this.alerts = {
+                        message: response.data.success,
+                        type: 'alert-success'
+                    }
                 })
                 .catch(errors => {
                     if (errors.response.status == 404) {
@@ -147,6 +156,11 @@ export default {
             axios.delete(`/deleteProject/${project_id}`)
                 .then(response => {
                     this.getTableData();
+
+                    this.alerts = {
+                        message: response.data.success,
+                        type: 'alert-success'
+                    }
                 })
                 .catch(errors => {
                     this.responseErrors = errors.response.data;
@@ -166,9 +180,16 @@ export default {
             if (newErrors) {
                 setTimeout(() => {
                     this.responseErrors = {};
-                }, 3000);
+                }, 4000);
             }
         },
+        alerts(newAlerts) {
+            if (newAlerts) {
+                setTimeout(() => {
+                    this.alerts = {};
+                }, 4000);
+            }
+        }
     },
 };
 </script>

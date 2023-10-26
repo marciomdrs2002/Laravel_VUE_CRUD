@@ -46,7 +46,7 @@ class ProjectController extends Controller
         $project->user()->associate($user);
         $project->save();
 
-        return response()->json('success', 200);
+        return response()->json(['success' => 'Project has been created'], 200);
     }
     public function destroy($id)
     {
@@ -55,17 +55,31 @@ class ProjectController extends Controller
             return response()->json(['error' => 'An error has occurred. Project not found'], 404);
         }
         $project->delete();
-        return response()->json('success', 200);
+        return response()->json(['success' => 'Project has been deleted'], 200);
     }
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'value' => 'required|numeric',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $projects = Project::find($request->id);
 
         if (!$projects) {
             return response()->json(['error' => 'An error has occurred. Project not found'], 404);
         }
-        
+
         $projects->update($request->all());
+
+        return response()->json(['success' => 'Project has been updated'], 200);
     }
 }
