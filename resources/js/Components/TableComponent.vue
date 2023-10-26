@@ -1,0 +1,53 @@
+<template>
+  <div>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col">Value</th>
+          <th scope="col">Status</th>
+          <th scope="col">Creator</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(project, index) in projects" :key="index">
+          <th scope="row">{{ project.id }}</th>
+          <td>{{ project.name }}</td>
+          <td>{{ project.start_date }}</td>
+          <td>{{ project.end_date }}</td>
+          <td>{{ project.value }}</td>
+          <td>{{ project.status }}</td>
+          <td>{{ project.creator }}</td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-outline-primary" @click="edit(index)">Edit</button>
+              <button type="button" class="btn btn-outline-danger" @click="$emit('delete', project.id)">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script setup>
+
+const props = defineProps({
+  projects: Array,
+});
+
+const emit = defineEmits(['delete', 'edit'])
+
+function edit(index) {
+  const projectEditing = props.projects[index]
+  emit('edit', projectEditing)
+}
+
+
+</script>
+
+<style scoped></style>
