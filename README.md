@@ -13,7 +13,7 @@
 <br>
 
 <p align="center">
-  <img alt="Payment_api" src"./Screenshot_1.png" width="100%">
+  <img alt="Screenshot" src="https://imgur.com/0y1pXbL">
 </p>
 
 ## 🚀 Technologies

@@ -20,7 +20,11 @@
           <td>{{ project.start_date }}</td>
           <td>{{ project.end_date }}</td>
           <td>{{ project.value }}</td>
-          <td>{{ project.status }}</td>
+          <td class="align-middle text-center">
+            <span class="status-circle d-inline-block"
+              :class="{ 'active': project.status == 'active', 'inactive': project.status == 'inactive' }">
+            </span>
+          </td>
           <td>{{ project.creator }}</td>
           <td>
             <div class="btn-group" role="group" aria-label="Basic example">
@@ -49,4 +53,18 @@ const emit = defineEmits(['delete', 'edit'])
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.status-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.active {
+  background-color: rgb(80, 199, 80);
+}
+
+.inactive {
+  background-color: red;
+}
+</style>

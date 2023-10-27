@@ -71,7 +71,7 @@
         <div v-if="alerts" class="alert w-50 mx-auto mt-6" role="alert" :class="alerts.type">
             {{ alerts.message }}
         </div>
-        <div class="container">
+        <div class="container py-12">
             <div class="overflow-hidden shadow-sm rounded card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <p>Projects</p>
@@ -82,10 +82,12 @@
                 <div class="alert alert-danger" role="alert" v-if="responseErrors.error">
                     {{ responseErrors.error }}
                 </div>
-                <TableComponent :projects="data.data" @delete="deleteProject" @edit="getEditingProject" />
-            </div>
-            <div class="pagination">
-                <Bootstrap5Pagination :data="data" @pagination-change-page="getTableData" />
+                <div class="table-projects">
+                    <TableComponent :projects="data.data" @delete="deleteProject" @edit="getEditingProject" />
+                    <div class="pagination d-flex justify-content-center">
+                        <Bootstrap5Pagination :data="data" @pagination-change-page="getTableData" />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -108,7 +110,7 @@ export default {
     },
     data() {
         return {
-            alerts: {},
+            alerts: null,
             data: {},
             form: {
                 status: 'active',
@@ -187,7 +189,7 @@ export default {
         alerts(newAlerts) {
             if (newAlerts) {
                 setTimeout(() => {
-                    this.alerts = {};
+                    this.alerts = null;
                 }, 5000);
             }
         },

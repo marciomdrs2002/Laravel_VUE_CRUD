@@ -20,7 +20,6 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'start_date' => 'required|date',
