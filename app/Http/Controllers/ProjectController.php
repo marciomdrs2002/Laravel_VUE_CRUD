@@ -13,7 +13,7 @@ class ProjectController extends Controller
     {
         $projects = Project::paginate(2);
         if (!$projects) {
-            return response()->json(['error' => 'An error has occurred. Reload the page'], 404);
+            return response()->json(['error' => 'An error has occurred. Please Try Again'], 404);
         }
         return response()->json($projects, 200);
     }

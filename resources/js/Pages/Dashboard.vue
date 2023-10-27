@@ -118,7 +118,7 @@ export default {
             responseErrors: {},
         };
     },
-    async created() {
+    async mounted() {
         this.getTableData();
     },
     methods: {
