@@ -13,7 +13,7 @@
 <br>
 
 <p align="center">
-  <img alt="Screenshot" src="https://imgur.com/0y1pXbL">
+  <img alt="Screenshot" src="Screenshot_1.png" width="100">
 </p>
 
 ## 🚀 Technologies
