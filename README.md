@@ -12,9 +12,9 @@
 
 <br>
 
-<p align="center">
+<!-- <p align="center">
   <img alt="Screenshot" src="Screenshot_1.png" width="100%" height="100%">
-</p>
+</p> -->
 
 ## 🚀 Technologies
 
