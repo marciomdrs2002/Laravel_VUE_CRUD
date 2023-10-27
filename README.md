@@ -13,7 +13,7 @@
 <br>
 
 <p align="center">
-  <img alt="Screenshot" src="Screenshot_1.png" width="100">
+  <img alt="Screenshot" src="Screenshot_1.png" width="100" height="100">
 </p>
 
 ## 🚀 Technologies
