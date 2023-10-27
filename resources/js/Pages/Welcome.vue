@@ -1,22 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-
-defineProps({
-    canLogin: {
-        type: Boolean,
-    },
-    canRegister: {
-        type: Boolean,
-    },
-    laravelVersion: {
-        type: String,
-        required: true,
-    },
-    phpVersion: {
-        type: String,
-        required: true,
-    },
-});
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 </script>
 
 <template>
@@ -29,7 +13,7 @@ defineProps({
 
     <div class="max-w-7xl mx-auto p-6 lg:p-8 flex flex-col items-center">
     <div class="flex justify-center">
-        <img src="../../../public/logo-nieuw-cloudplusplus.png" alt="logo-cloud++">
+        <ApplicationLogo class="text-white"/>
     </div>
     <div class="p-6 text-right">
         <Link

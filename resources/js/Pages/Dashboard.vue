@@ -49,7 +49,8 @@
                                 <input v-model="form.creator" type="text" class="form-control" id="creator" disabled>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="status" @change="updateStatus" checked>
+                                <input class="form-check-input" type="checkbox" id="status" @change="updateStatus"
+                                    :checked="form.status == 'active'">
                                 <label class="form-check-label" for="status">
                                     Active
                                 </label>
@@ -74,14 +75,17 @@
             <div class="overflow-hidden shadow-sm rounded card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <p>Projects</p>
-                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_create">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_create">
                         New Project
                     </button>
                 </div>
                 <div class="alert alert-danger" role="alert" v-if="responseErrors.error">
                     {{ responseErrors.error }}
                 </div>
-                <TableComponent :projects="data" @delete="deleteProject" @edit="getEditingProject" />
+                <TableComponent :projects="data.data" @delete="deleteProject" @edit="getEditingProject" />
+            </div>
+            <div class="pagination">
+                <Bootstrap5Pagination :data="data" @pagination-change-page="getTableData" />
             </div>
         </div>
 
@@ -92,31 +96,34 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import TableComponent from '@/Components/TableComponent.vue';
 import axios from 'axios';
 import { Head } from '@inertiajs/vue3';
+import { Bootstrap5Pagination } from 'laravel-vue-pagination';
+
 
 export default {
     components: {
         AuthenticatedLayout,
         TableComponent,
-        Head
+        Head,
+        Bootstrap5Pagination
     },
     data() {
         return {
             alerts: {},
-            data: [],
+            data: {},
             form: {
                 status: 'active',
             },
             responseErrors: {},
         };
     },
-    mounted() {
+    async created() {
         this.getTableData();
     },
     methods: {
-        getTableData() {
-            axios.get('/getProjects')
+        async getTableData(page = 1) {
+            await axios.get(`/getProjects?page=${page}`)
                 .then(response => {
-                    this.data = response.data;
+                    this.data = response.data
                 })
                 .catch(errors => {
                     this.responseErrors = errors.response.data;
@@ -145,8 +152,8 @@ export default {
                     }
                 });
         },
-        getEditingProject(project) {
-            this.form = Object.assign({}, project);
+        getEditingProject(index) {
+            this.form = Object.assign({}, this.data.data[index]);
             $('#modal_create').modal('show');
         },
         deleteProject(project_id) {
@@ -170,26 +177,20 @@ export default {
             this.form = {
                 status: 'active',
             };
+            this.responseErrors = {}
         },
         updateStatus(event) {
             this.form.status = event.target.checked ? 'active' : 'inactive';
         },
     },
     watch: {
-        responseErrors(newErrors) {
-            if (newErrors) {
-                setTimeout(() => {
-                    this.responseErrors = {};
-                }, 4000);
-            }
-        },
         alerts(newAlerts) {
             if (newAlerts) {
                 setTimeout(() => {
                     this.alerts = {};
-                }, 4000);
+                }, 5000);
             }
-        }
+        },
     },
 };
 </script>

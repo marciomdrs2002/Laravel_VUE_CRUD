@@ -11,7 +11,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::paginate(2);
         if (!$projects) {
             return response()->json(['error' => 'An error has occurred. Reload the page'], 404);
         }

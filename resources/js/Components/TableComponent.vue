@@ -13,7 +13,7 @@
           <th scope="col">Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="projects && projects.length > 0">
         <tr v-for="(project, index) in projects" :key="index">
           <th scope="row">{{ project.id }}</th>
           <td>{{ project.name }}</td>
@@ -24,29 +24,28 @@
           <td>{{ project.creator }}</td>
           <td>
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-outline-primary" @click="edit(index)">Edit</button>
+              <button type="button" class="btn btn-outline-primary" @click="$emit('edit', index)">Edit</button>
               <button type="button" class="btn btn-outline-danger" @click="$emit('delete', project.id)">Delete</button>
             </div>
           </td>
         </tr>
+      </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="8" class="text-center">No results Found...</td>
+        </tr>
+
       </tbody>
     </table>
   </div>
 </template>
 
 <script setup>
-
 const props = defineProps({
   projects: Array,
 });
 
 const emit = defineEmits(['delete', 'edit'])
-
-function edit(index) {
-  const projectEditing = props.projects[index]
-  emit('edit', projectEditing)
-}
-
 
 </script>
 
